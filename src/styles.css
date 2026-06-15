@@ -4,8 +4,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Nunito — rounded, warm, friendly. Closest free analog to the brand display font. */
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap");
+/* Nunito loaded via <link> in __root.tsx (Lightning CSS can't resolve remote @import) */
 
 @theme inline {
   --color-background: var(--background);
