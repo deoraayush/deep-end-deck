@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1790168261773,
+      "tag": "0000_create_team_rooms",
+      "breakpoints": true
+    }
+  ]
+}
