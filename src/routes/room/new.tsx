@@ -16,7 +16,7 @@ export const Route = createFileRoute("/room/new")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
-  component: NewRoom;
+  component: NewRoom,
 });
 
 function NewRoom() {
