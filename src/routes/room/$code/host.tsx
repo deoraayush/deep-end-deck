@@ -4,6 +4,7 @@ import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { PlayingCard } from "@/components/Card";
 import { BetaBadge } from "@/components/BetaBadge";
+import { Reflections } from "@/components/Reflections";
 import { LEVEL_LABELS, type GameCard, type Level } from "@/lib/cards";
 import {
   buildAllLevels,
@@ -251,6 +252,7 @@ function Host() {
           <Stat label="Levels Done" value={stats.levelsCompleted} />
           <Stat label="Minutes" value={stats.mins} />
         </div>
+        <Reflections />
         <div className="mt-10 flex flex-wrap justify-center gap-4">
           <Link to="/room/new" className="btn btn-primary">New Team Session</Link>
           <Link to="/" className="btn btn-secondary">Return Home</Link>
