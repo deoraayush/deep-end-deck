@@ -113,7 +113,8 @@ function Host() {
   const pushState = useCallback(
     async (patch: Record<string, unknown>) => {
       if (!room) return;
-      await supabase.from("rooms").update(patch).eq("id", room.id);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await supabase.from("rooms").update(patch as any).eq("id", room.id);
     },
     [room],
   );
