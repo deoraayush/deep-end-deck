@@ -1,4 +1,5 @@
-export type Level = 1 | 2 | 3;
+export type Level = 1 | 2 | 3 | 4;
+export type DeckEdition = "original" | "corporate";
 export type CardKind = "level" | "action";
 
 export interface GameCard {
@@ -6,12 +7,14 @@ export interface GameCard {
   kind: CardKind;
   level?: Level;
   text: string;
+  label?: string;
 }
 
 export const LEVEL_LABELS: Record<Level, string> = {
   1: "LEVEL 1  PERCEPTION",
   2: "LEVEL 2  CONNECTION",
   3: "LEVEL 3  REFLECTION",
+  4: "LEVEL 4",
 };
 
 export const LEVEL_1: string[] = [

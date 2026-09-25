@@ -1,30 +1,30 @@
-import { shuffle, type GameCard } from "@/lib/cards";
+import { shuffle, type GameCard, type Level } from "@/lib/cards";
 
-/** Deep End Club .PDF — the team deck used by Team Sessions. */
-export type TeamLevel = 1 | 2 | 3 | 4;
+/** Deep End Club .PDF — Corporate Edition, transcribed from the supplied 66-page deck. */
+export type CorporateLevel = 1 | 2 | 3 | 4;
 
-export const TEAM_LEVEL_LABELS: Record<TeamLevel, string> = {
+export const CORPORATE_LEVEL_LABELS: Record<CorporateLevel, string> = {
   1: "LEVEL 1  CONNECT",
   2: "LEVEL 2  COLLABORATE",
   3: "LEVEL 3  CHALLENGE",
   4: "LEVEL 4  CREATE",
 };
 
-export const TEAM_LEVEL_DESCRIPTIONS: Record<TeamLevel, string> = {
+export const CORPORATE_LEVEL_DESCRIPTIONS: Record<CorporateLevel, string> = {
   1: "Who you are beyond the job title.",
   2: "How you actually work.",
   3: "The friction nobody names out loud.",
   4: "Where you'd take things, given the room.",
 };
 
-export const TEAM_LEVEL_MESSAGES: Record<TeamLevel, string> = {
+export const CORPORATE_LEVEL_MESSAGES: Record<CorporateLevel, string> = {
   1: "You know a little more now.",
   2: "The good stuff usually lives beneath the surface.",
   3: "Thanks for showing up honestly.",
   4: "Water gets deeper. So does the conversation.",
 };
 
-const TEAM_DECK: Record<TeamLevel, string[]> = {
+const CORPORATE_DECK: Record<CorporateLevel, string[]> = {
   1: [
     "What's something you're genuinely good at that has nothing to do with your job?",
     "What's a fictional character whose work ethic you secretly relate to?",
@@ -75,7 +75,7 @@ const TEAM_DECK: Record<TeamLevel, string[]> = {
   ],
 };
 
-export const TEAM_ACTION_CARDS: string[] = [
+export const CORPORATE_ACTION_CARDS: string[] = [
   "Drink water.",
   "Ten pushups. Or ten jumping jacks if you're precious about your blazer.",
   "Everyone stands. Stretch. Shake it out.",
@@ -93,7 +93,7 @@ export const TEAM_ACTION_CARDS: string[] = [
   "High five the person across from you. No explanation needed.",
 ];
 
-export const TEAM_RULES: string[] = [
+export const CORPORATE_RULES: string[] = [
   "Shuffle the Main Deck and the Action Deck separately.",
   "Most sessions start at Level 1 — Connect and move deeper as the group warms up. You don't have to reach Level 4 — Create to have a good session.",
   "Draw a Question Card. Read it aloud. Everyone answers — starting with whoever drew it.",
@@ -103,15 +103,16 @@ export const TEAM_RULES: string[] = [
   "There's no winning. There's just talking to people you thought you already knew.",
 ];
 
-export function buildTeamLevelDeck(level: TeamLevel): GameCard[] {
-  return shuffle(TEAM_DECK[level]).map((text, i) => ({
-    id: `T${level}-${i}`,
+export function buildCorporateLevelDeck(level: CorporateLevel): GameCard[] {
+  return shuffle(CORPORATE_DECK[level]).map((text, i) => ({
+    id: `C${level}-${i}`,
     kind: "level",
-    level: level as GameCard["level"],
+    level: level as Level,
     text,
+    label: CORPORATE_LEVEL_LABELS[level],
   }));
 }
 
-export function buildTeamActionPool(): GameCard[] {
-  return shuffle(TEAM_ACTION_CARDS).map((text, i) => ({ id: `TA-${i}`, kind: "action", text }));
+export function buildCorporateActionPool(): GameCard[] {
+  return shuffle(CORPORATE_ACTION_CARDS).map((text, i) => ({ id: `CA-${i}`, kind: "action", text }));
 }
