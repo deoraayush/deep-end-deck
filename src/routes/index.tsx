@@ -9,6 +9,8 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "A conversation card game designed to replace small talk with conversations people actually remember." },
       { property: "og:title", content: "Deep End Club" },
       { property: "og:description", content: "A card game about people." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Home,
@@ -54,13 +56,6 @@ function Home() {
           >
             Start Game
           </button>
-          <button
-            disabled={!canStart}
-            onClick={() => canStart && navigate({ to: "/room/new" })}
-            className="btn btn-orange"
-          >
-            Start a Team Session (beta)
-          </button>
           <Link to="/how" className="btn btn-secondary">
             How It Works
           </Link>
@@ -76,21 +71,20 @@ function Home() {
         )}
       </section>
 
-      {/* two ways to play */}
+      {/* editions */}
       <section className="mx-auto grid max-w-6xl gap-6 px-6 pb-20 md:grid-cols-2">
         <div className="rounded-2xl border-2 border-[color:var(--navy)]/15 p-6 text-[color:var(--navy)]">
-          <h2 className="font-display text-xl font-extrabold tracking-wide">SINGLE DEVICE</h2>
+          <p className="text-xs font-extrabold uppercase tracking-widest opacity-60">For friends and family</p>
+          <h2 className="mt-2 font-display text-xl font-extrabold tracking-wide">ORIGINAL EDITION</h2>
           <p className="mt-3 leading-relaxed">
-            One phone or laptop, passed around the table. Draw a card, answer it, hand it on.
-            The rules and levels below apply exactly as written.
+            Three levels and 80 cards for friends, strangers, roommates, families, and people who want a conversation worth remembering.
           </p>
         </div>
         <div className="rounded-2xl border-2 border-[color:var(--orange)]/40 p-6 text-[color:var(--navy)]">
-          <h2 className="font-display text-xl font-extrabold tracking-wide">TEAM SESSION · BETA</h2>
+          <p className="text-xs font-extrabold uppercase tracking-widest opacity-60">For teams at work</p>
+          <h2 className="mt-2 font-display text-xl font-extrabold tracking-wide">CORPORATE EDITION · .PDF</h2>
           <p className="mt-3 leading-relaxed">
-            One facilitator runs the deck; everyone follows the same card live on their own phone
-            with just a room code — no sign-in needed. The facilitator draws cards and uses Not Yet
-            for the group, and at the end can add anonymous reflections to see the themes you shared.
+            Four levels and 55 cards for teams who talk about deadlines every day and almost nothing else. Not therapy. Not a trust fall.
           </p>
         </div>
       </section>

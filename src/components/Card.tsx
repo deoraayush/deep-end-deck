@@ -8,7 +8,7 @@ import { LEVEL_LABELS } from "@/lib/cards";
  */
 export function PlayingCard({ card, animKey }: { card: GameCard; animKey: string | number }) {
   const isAction = card.kind === "action";
-  const label = isAction ? "ACTION CARD" : LEVEL_LABELS[card.level!];
+  const label = isAction ? "ACTION CARD" : card.label ?? (card.level ? LEVEL_LABELS[card.level] : "DEEP END CLUB");
 
   return (
     <div className="w-full max-w-[640px]">
