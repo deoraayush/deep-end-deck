@@ -228,18 +228,13 @@ function Play() {
 
   // LEVEL TRANSITION
   if (showTransition !== null) {
-    const msgs: Record<Level, string> = {
-      1: "You know a little more now.",
-      2: "The good stuff usually lives beneath the surface.",
-      3: "Thanks for showing up honestly.",
-    };
-    return (
+        return (
       <main className="mx-auto flex min-h-screen max-w-xl flex-col items-center justify-center px-6 text-center text-[color:var(--navy)]">
         <p className="text-xs font-extrabold tracking-widest opacity-60">
           LEVEL {showTransition} COMPLETE
         </p>
         <h1 className="mt-6 font-display text-3xl font-extrabold sm:text-4xl">
-          {msgs[showTransition]}
+          {levelMessage(config.edition, showTransition)}
         </h1>
         <button onClick={continueAfterTransition} className="btn btn-primary mt-12">
           Continue →
@@ -259,7 +254,7 @@ function Play() {
         </Link>
         <div className="text-center">
           <div className="text-xs font-extrabold tracking-widest text-[color:var(--navy)]">
-            {LEVEL_LABELS[lvState.level]}
+            {levelLabel(config.edition, lvState.level)}
           </div>
           <div className="mt-1 text-xs text-[color:var(--navy)]/60">
             {lvState.shown} / {lvState.totalCards}
