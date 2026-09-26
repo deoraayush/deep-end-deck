@@ -2,17 +2,19 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "@/lib/auth";
 import { PlayingCard } from "@/components/Card";
+import { type DeckEdition, type GameCard, type Level } from "@/lib/cards";
 import {
-  buildActionPool,
-  buildLevelDeck,
-  LEVEL_LABELS,
-  type GameCard,
-  type Level,
-} from "@/lib/cards";
+  buildEditionActionPool,
+  buildEditionLevelDeck,
+  levelLabel,
+  levelMessage,
+  levelsForDepth,
+  maxDepth,
+} from "@/lib/gameDeck";
 import type { GameConfig } from "./setup";
 
 export const Route = createFileRoute("/play")({
-  head: () => ({ meta: [{ title: "Deep End Club" }] }),
+  head: () => ({ meta: [{ title: "Playing — Deep End Club" }] }),
   component: Play,
 });
 
@@ -27,10 +29,8 @@ interface LevelState {
   shown: number;
 }
 
-function buildLevelState(level: Level, actionPool: GameCard[], useActions: boolean): LevelState {
-  const base = buildLevelDeck(level);
-  // distribute ~6-7 action cards per level when enabled
-  const actionsPerLevel = useActions ? Math.min(7, Math.ceil(actionPool.length / 3)) : 0;
+function buildLevelState(edition: DeckEdition, level: Level, actionPool: GameCard[], actionsPerLevel: number): LevelState {
+  const base = buildEditionLevelDeck(edition, level);
   return {
     level,
     base,
@@ -65,14 +65,19 @@ function Play() {
       return;
     }
     const raw = sessionStorage.getItem("dec.config");
-    const cfg: GameConfig = raw ? JSON.parse(raw) : { mode: "full", actions: true };
+    const parsed = raw ? JSON.parse(raw) : {};
+    const edition: DeckEdition = parsed.edition === "corporate" ? "corporate" : "original";
+    const cfg: GameConfig = {
+      edition,
+      depth: parsed.depth ?? maxDepth(edition),
+      actions: parsed.actions ?? true,
+    };
     setConfig(cfg);
 
-    const wanted: Level[] =
-      cfg.mode === "perception" ? [1] : cfg.mode === "perception_connection" ? [1, 2] : [1, 2, 3];
-
-    const pool = cfg.actions ? buildActionPool() : [];
-    const states = wanted.map((lv) => buildLevelState(lv, pool, cfg.actions));
+    const wanted = levelsForDepth(cfg.edition, cfg.depth);
+    const pool = cfg.actions ? buildEditionActionPool(cfg.edition) : [];
+    const perLevel = cfg.actions ? Math.ceil(pool.length / maxDepth(cfg.edition)) : 0;
+    const states = wanted.map((lv) => buildLevelState(cfg.edition, lv, pool, perLevel));
     setLevels(states);
     drawNext(states, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -223,18 +228,13 @@ function Play() {
 
   // LEVEL TRANSITION
   if (showTransition !== null) {
-    const msgs: Record<Level, string> = {
-      1: "You know a little more now.",
-      2: "The good stuff usually lives beneath the surface.",
-      3: "Thanks for showing up honestly.",
-    };
-    return (
+        return (
       <main className="mx-auto flex min-h-screen max-w-xl flex-col items-center justify-center px-6 text-center text-[color:var(--navy)]">
         <p className="text-xs font-extrabold tracking-widest opacity-60">
           LEVEL {showTransition} COMPLETE
         </p>
         <h1 className="mt-6 font-display text-3xl font-extrabold sm:text-4xl">
-          {msgs[showTransition]}
+          {levelMessage(config.edition, showTransition)}
         </h1>
         <button onClick={continueAfterTransition} className="btn btn-primary mt-12">
           Continue →
@@ -254,7 +254,7 @@ function Play() {
         </Link>
         <div className="text-center">
           <div className="text-xs font-extrabold tracking-widest text-[color:var(--navy)]">
-            {LEVEL_LABELS[lvState.level]}
+            {levelLabel(config.edition, lvState.level)}
           </div>
           <div className="mt-1 text-xs text-[color:var(--navy)]/60">
             {lvState.shown} / {lvState.totalCards}
